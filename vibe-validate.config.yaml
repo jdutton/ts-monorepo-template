@@ -7,6 +7,12 @@ ci:
   os: ['ubuntu-latest', 'windows-latest']
   failFast: false
 
+# Hooks configuration
+hooks:
+  preCommit:
+    secretScanning:
+      enabled: true
+
 validation:
   phases:
     - name: 'Fast Checks & Build'
