@@ -1,0 +1,34 @@
+# vibe-validate configuration
+# Documentation: https://github.com/jdutton/vibe-validate
+
+# CI matrix configuration
+ci:
+  nodeVersions: ['22', '24']
+  os: ['ubuntu-latest', 'windows-latest']
+  failFast: false
+
+validation:
+  phases:
+    - name: 'Fast Checks & Build'
+      parallel: false
+      steps:
+        - name: 'TypeScript type checking'
+          command: 'bun run typecheck'
+
+        - name: 'ESLint'
+          command: 'bun run lint'
+
+        - name: 'Code duplication check'
+          command: 'bun run duplication-check'
+
+        - name: 'Build packages'
+          command: 'bun run build'
+
+        - name: 'Unit tests with coverage'
+          command: 'bun run test:coverage'
+
+    - name: 'Integration Tests'
+      parallel: false
+      steps:
+        - name: 'Integration tests'
+          command: 'bun run test:integration'
