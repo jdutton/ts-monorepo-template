@@ -19,17 +19,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
       - name: Setup Node.js ${{ matrix.node }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: bun install
       - name: Build packages
-        run: npm run build
+        run: bun run build
       - name: Run validation
-        run: npm run validate
+        run: bun run validate
         env:
           GH_TOKEN: ${{ github.token }}
     strategy:

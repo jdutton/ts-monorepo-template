@@ -68,11 +68,11 @@ for (const pkg of packages) {
     shell: false,
   });
 
-  if (result.status !== 0) {
+  if (result.status === 0) {
+    log(`  ✓ ${pkg}: passed`, 'green');
+  } else {
     log(`  ✗ ${pkg}: failed`, 'red');
     failedPackages++;
-  } else {
-    log(`  ✓ ${pkg}: passed`, 'green');
   }
   console.log('');
 }
