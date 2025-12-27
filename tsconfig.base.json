@@ -6,7 +6,7 @@
     "lib": ["ES2024"],
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
 
     // Strict type checking
     "strict": true,
@@ -40,8 +40,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "coverage",
-    "**/*.test.ts",
-    "**/*.spec.ts"
+    "coverage"
   ]
 }
