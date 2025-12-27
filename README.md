@@ -1,6 +1,6 @@
 # TypeScript Monorepo Template
 
-[![CI](https://github.com/yourusername/your-repo/actions/workflows/validate.yml/badge.svg)](https://github.com/yourusername/your-repo/actions) [![codecov](https://codecov.io/gh/yourusername/your-repo/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/your-repo) [![Node](https://img.shields.io/badge/node-22%20%7C%2024-brightgreen.svg)](https://nodejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/jdutton/ts-monorepo-template/actions/workflows/validate.yml/badge.svg)](https://github.com/jdutton/ts-monorepo-template/actions) [![codecov](https://codecov.io/gh/jdutton/ts-monorepo-template/branch/main/graph/badge.svg)](https://codecov.io/gh/jdutton/ts-monorepo-template) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jdutton_ts-monorepo-template&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jdutton_ts-monorepo-template) [![Node](https://img.shields.io/badge/node-22%20%7C%2024-brightgreen.svg)](https://nodejs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A production-ready TypeScript monorepo template with strict linting, comprehensive testing, and quality controls built-in.
 
@@ -30,8 +30,8 @@ A production-ready TypeScript monorepo template with strict linting, comprehensi
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/your-project.git
-cd your-project
+git clone https://github.com/jdutton/ts-monorepo-template.git
+cd ts-monorepo-template
 
 # Install dependencies
 bun install
