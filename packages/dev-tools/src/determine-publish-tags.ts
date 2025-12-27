@@ -24,12 +24,14 @@
 
 /* eslint-disable security/detect-non-literal-fs-filename */
 // appendFileSync uses GITHUB_OUTPUT env var (controlled by GitHub Actions)
+// readFileSync reads from PROJECT_ROOT constant (controlled, not user input)
 
-import { appendFileSync } from 'node:fs';
+import { appendFileSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import semver from 'semver';
 
-import { log, getNpmTagVersion } from './common.js';
+import { log, getNpmTagVersion, PROJECT_ROOT } from './common.js';
 
 /**
  * Output GitHub Actions output variable
@@ -113,34 +115,52 @@ if (isStable) {
   log('', 'reset');
   log('Checking if @next tag should be updated...', 'blue');
 
-  // Note: Replace 'your-package-name' with actual package name when publishing
-  const packageName = 'your-package-name';
-
+  // Read package name from root package.json
+  let packageName: string | undefined;
   try {
-    const currentNextVersion = getNpmTagVersion(packageName, 'next');
+    const rootPkgPath = join(PROJECT_ROOT, 'package.json');
+    const rootPkg = JSON.parse(readFileSync(rootPkgPath, 'utf8'));
+    packageName = rootPkg.name;
 
-    if (currentNextVersion) {
-      log(`  Current @next version: ${currentNextVersion}`, 'blue');
-
-      // Compare versions using semver
-      if (semver.gt(version, currentNextVersion)) {
-        log(`  ✓ ${version} > ${currentNextVersion}`, 'green');
-        log('  → Will update @next to this stable version', 'green');
-        updateNext = true;
-      } else {
-        log(`  - ${version} <= ${currentNextVersion}`, 'yellow');
-        log('  → Will NOT update @next (already newer or equal)', 'yellow');
-      }
-    } else {
-      log('  ⚠ No current @next version found on npm', 'yellow');
-      log('  → Will update @next to this stable version', 'green');
-      updateNext = true;
+    if (!packageName) {
+      throw new Error('Package name not found in root package.json');
     }
+
+    log(`  Package: ${packageName}`, 'blue');
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    log(`  ✗ Failed to query npm registry: ${message}`, 'red');
+    log(`  ✗ Failed to read package name: ${message}`, 'red');
     log('  → Defaulting to update @next (safer)', 'yellow');
     updateNext = true;
+  }
+
+  if (packageName) {
+    try {
+      const currentNextVersion = getNpmTagVersion(packageName, 'next');
+
+      if (currentNextVersion) {
+        log(`  Current @next version: ${currentNextVersion}`, 'blue');
+
+        // Compare versions using semver
+        if (semver.gt(version, currentNextVersion)) {
+          log(`  ✓ ${version} > ${currentNextVersion}`, 'green');
+          log('  → Will update @next to this stable version', 'green');
+          updateNext = true;
+        } else {
+          log(`  - ${version} <= ${currentNextVersion}`, 'yellow');
+          log('  → Will NOT update @next (already newer or equal)', 'yellow');
+        }
+      } else {
+        log('  ⚠ No current @next version found on npm', 'yellow');
+        log('  → Will update @next to this stable version', 'green');
+        updateNext = true;
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      log(`  ✗ Failed to query npm registry: ${message}`, 'red');
+      log('  → Defaulting to update @next (safer)', 'yellow');
+      updateNext = true;
+    }
   }
 }
 
