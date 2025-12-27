@@ -212,9 +212,7 @@ try {
   hasPackages = false;
 }
 
-if (!hasPackages) {
-  log('  - No packages found', 'yellow');
-} else {
+if (hasPackages) {
   // Update all workspace packages
   const counts = processWorkspacePackages<VersionUpdateResult>(
     (pkgPath) => updatePackageVersion(pkgPath, newVersion),
@@ -236,6 +234,8 @@ if (!hasPackages) {
   if (updatedCount === 0 && skippedCount === 0) {
     log('  - No packages found', 'yellow');
   }
+} else {
+  log('  - No packages found', 'yellow');
 }
 
 console.log('');
