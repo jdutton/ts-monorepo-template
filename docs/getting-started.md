@@ -15,8 +15,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone and Install
 
 ```bash
-# Clone your repository (or create from template)
-git clone https://github.com/yourusername/your-project.git
+# Clone the template repository
+git clone https://github.com/jdutton/ts-monorepo-template.git your-project
 cd your-project
 
 # Install dependencies
@@ -165,7 +165,7 @@ cd packages/my-package
 bun add some-dependency
 
 # Or from root:
-bun add some-dependency --filter @your-org/my-package
+bun add some-dependency --filter @ts-monorepo-template/my-package
 ```
 
 ### Updating Dependencies
@@ -225,7 +225,7 @@ Settings will be automatically applied from `.editorconfig`.
 
 ### Other IDEs
 
-This template uses `.editorconfig` which is supported by most modern IDEs:
+This project uses `.editorconfig` which is supported by most modern IDEs:
 - IntelliJ IDEA / WebStorm
 - Sublime Text
 - Atom

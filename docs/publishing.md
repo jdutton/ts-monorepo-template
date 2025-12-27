@@ -17,20 +17,20 @@ Edit each package's `package.json`:
 
 ```json
 {
-  "name": "@your-org/package-name",
+  "name": "@ts-monorepo-template/package-name",
   "version": "1.0.0",
   "description": "Clear description of what this package does",
   "keywords": ["relevant", "search", "terms"],
   "author": "Your Name <your.email@example.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/your-repo.git",
+    "url": "https://github.com/jdutton/ts-monorepo-template.git",
     "directory": "packages/package-name"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/your-repo/issues"
+    "url": "https://github.com/jdutton/ts-monorepo-template/issues"
   },
-  "homepage": "https://github.com/yourusername/your-repo#readme",
+  "homepage": "https://github.com/jdutton/ts-monorepo-template#readme",
   "publishConfig": {
     "access": "public"
   }
@@ -42,20 +42,20 @@ Edit each package's `package.json`:
 Each package should have its own `README.md`:
 
 ```markdown
-# @your-org/package-name
+# @ts-monorepo-template/package-name
 
 Brief description
 
 ## Installation
 
 \`\`\`bash
-npm install @your-org/package-name
+npm install @ts-monorepo-template/package-name
 \`\`\`
 
 ## Usage
 
 \`\`\`typescript
-import { something } from '@your-org/package-name';
+import { something } from '@ts-monorepo-template/package-name';
 \`\`\`
 
 ## API
@@ -223,7 +223,7 @@ npm publish --tag beta
 npm publish --tag next
 
 # Update tag later
-npm dist-tag add @your-org/package@1.2.3 latest
+npm dist-tag add @ts-monorepo-template/package@1.2.3 latest
 ```
 
 ## Automated Publishing with CI/CD

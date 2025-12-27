@@ -67,6 +67,7 @@ tmp/
 
 # Explicitly include critical documentation (negation patterns MUST come after the ignore)
 !README.md
+!TEMPLATE-CLONE-PROMPT.md
 !CHANGELOG.md
 !LICENSE
 !CONTRIBUTING.md

@@ -102,7 +102,7 @@ mkdir -p packages/my-package/src packages/my-package/test
 
 ```json
 {
-  "name": "@your-org/my-package",
+  "name": "@ts-monorepo-template/my-package",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -173,7 +173,7 @@ bun run build
 
 ### Test Types
 
-The template supports three levels of testing:
+This project supports three levels of testing:
 
 #### Unit Tests (`*.test.ts`)
 - Test individual functions/classes
@@ -212,7 +212,7 @@ packages/my-package/
 
 ### ESLint
 
-This template enforces strict linting rules:
+This project enforces strict linting rules:
 
 - **Zero warnings policy**: `--max-warnings=0`
 - **SonarJS**: Catches code smells and bugs
@@ -246,7 +246,7 @@ Strict mode enabled with additional checks:
 
 ## Validation Pipeline
 
-The template uses [vibe-validate](https://github.com/jdutton/vibe-validate) for git-aware validation:
+This project uses [vibe-validate](https://github.com/jdutton/vibe-validate) for git-aware validation:
 
 ```bash
 # Run all validation checks
@@ -339,7 +339,7 @@ Add scripts to `tools/` directory:
 
 ## Validating the Template
 
-The template includes an example package to validate everything works:
+This project includes an example package to validate everything works:
 
 ```bash
 # Run all validation checks
