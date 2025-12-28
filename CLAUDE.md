@@ -38,10 +38,13 @@ ts-monorepo-template/
 ### ESLint Rules
 
 - **Zero Warnings Policy**: `--max-warnings=0`
-- **Cognitive Complexity**: Max 15 for production, 20 for tests/tools
+- **Cognitive Complexity**: Max 15 (matches SonarQube sonarway)
+- **Nesting Depth**: Max 4 levels (matches SonarQube sonarway)
 - **No Explicit Any**: Errors in production code, allowed in tests
+- **Readonly Class Members**: Required for never-reassigned members
 - **Security**: Full security plugin rules enforced
 - **Import Organization**: Alphabetical with newlines between groups
+- **String Escaping**: Prefer `String.raw` for backslashes
 
 ### Code Quality Thresholds
 

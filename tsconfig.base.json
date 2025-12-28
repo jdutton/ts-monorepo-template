@@ -6,7 +6,6 @@
     "lib": ["ES2024"],
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
-    "rootDir": ".",
 
     // Strict type checking
     "strict": true,
