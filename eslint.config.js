@@ -21,14 +21,14 @@ export default [
   // Global ignores
   {
     ignores: [
-      'dist/',
-      'build/',
-      'coverage/',
-      'node_modules/',
+      '**/dist/**',
+      '**/build/**',
+      '**/coverage/**',
+      '**/node_modules/**',
       '**/*.d.ts',
       'vitest.config.ts',
       'vitest.*.config.ts',
-      '.worktrees/',  // Git worktrees
+      '.worktrees/**',  // Git worktrees
     ],
   },
 
