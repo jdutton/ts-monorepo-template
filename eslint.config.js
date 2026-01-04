@@ -87,6 +87,8 @@ export default [
       }],
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       '@typescript-eslint/prefer-readonly': 'error',
+      '@typescript-eslint/no-redundant-type-constituents': 'error',
+      '@typescript-eslint/prefer-function-type': 'error',
 
       // General
       'no-console': 'off',
@@ -130,6 +132,11 @@ export default [
       'unicorn/no-instanceof-array': 'error',
       'unicorn/prefer-date-now': 'error',
       'unicorn/prefer-ternary': 'off',
+      'unicorn/prefer-number-properties': 'error',
+      'unicorn/no-negated-condition': 'error',
+      'unicorn/prefer-export-from': 'error',
+      'unicorn/prefer-structured-clone': 'error',
+      'unicorn/no-zero-fractions': 'error',
     },
   },
 ];
