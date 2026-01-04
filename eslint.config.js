@@ -28,6 +28,7 @@ export default [
       '**/*.d.ts',
       'vitest.config.ts',
       'vitest.*.config.ts',
+      '.worktrees/',  // Git worktrees
     ],
   },
 
@@ -66,6 +67,7 @@ export default [
       'local/no-child-process-execSync': 'error',
 
       // TypeScript
+      'no-unused-vars': 'off', // Use @typescript-eslint/no-unused-vars instead
       '@typescript-eslint/no-unused-vars': ['error', {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
