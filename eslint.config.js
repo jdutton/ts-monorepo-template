@@ -127,6 +127,7 @@ export default [
       'unicorn/prefer-string-replace-all': 'error',
       'unicorn/prefer-array-find': 'error',
       'unicorn/prefer-array-some': 'error',
+      'unicorn/prefer-at': 'error',
       'unicorn/prefer-includes': 'error',
       'unicorn/no-for-loop': 'error',
       'unicorn/prefer-spread': 'error',
