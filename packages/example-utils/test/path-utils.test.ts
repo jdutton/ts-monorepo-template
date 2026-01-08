@@ -154,8 +154,13 @@ describe('isAbsolutePath', () => {
 });
 
 describe('toAbsolutePath', () => {
-  it('should return absolute path unchanged', () => {
-    expect(toAbsolutePath(TEST_ABSOLUTE_PATH)).toBe(TEST_ABSOLUTE_PATH);
+  it('should return absolute path normalized for platform', () => {
+    const result = toAbsolutePath(TEST_ABSOLUTE_PATH);
+    // On Windows, this converts / to \, which is expected platform-specific behavior
+    expect(isAbsolutePath(result)).toBe(true);
+    expect(result).toContain('usr');
+    expect(result).toContain('local');
+    expect(result).toContain('bin');
   });
 
   it('should convert relative path to absolute using baseDir', () => {

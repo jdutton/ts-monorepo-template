@@ -183,19 +183,31 @@ export function isAbsolutePath(p: string): boolean {
 /**
  * Convert a relative path to absolute
  *
- * If path is already absolute, returns it normalized.
- * Otherwise resolves relative to baseDir.
+ * If path is already absolute, returns it normalized with platform-specific separators.
+ * Otherwise resolves relative to baseDir (or cwd if not provided).
+ *
+ * **Platform Behavior:**
+ * - Returns paths with platform-specific separators (\ on Windows, / on Unix)
+ * - Use `toForwardSlash()` if you need consistent forward slashes
  *
  * @param p - Path to convert
- * @param baseDir - Base directory for resolution
- * @returns Absolute path
+ * @param baseDir - Base directory for resolution (defaults to process.cwd())
+ * @returns Absolute path with platform-specific separators
  *
  * @example
+ * ```typescript
+ * // Unix/macOS
  * toAbsolutePath('./docs/README.md', '/project')
  * // Returns: '/project/docs/README.md'
  *
- * toAbsolutePath('/absolute/path.md', '/project')
- * // Returns: '/absolute/path.md'
+ * // Windows
+ * toAbsolutePath('./docs/README.md', 'C:\\project')
+ * // Returns: 'C:\\project\\docs\\README.md'
+ *
+ * // For consistent forward slashes across platforms:
+ * toForwardSlash(toAbsolutePath('./docs/README.md', '/project'))
+ * // Returns: '/project/docs/README.md' (on all platforms)
+ * ```
  */
 export function toAbsolutePath(p: string, baseDir?: string): string {
   if (path.isAbsolute(p)) {
