@@ -21,13 +21,14 @@ export default [
   // Global ignores
   {
     ignores: [
-      'dist/',
-      'build/',
-      'coverage/',
-      'node_modules/',
+      '**/dist/**',
+      '**/build/**',
+      '**/coverage/**',
+      '**/node_modules/**',
       '**/*.d.ts',
       'vitest.config.ts',
       'vitest.*.config.ts',
+      '.worktrees/**',  // Git worktrees
     ],
   },
 
@@ -64,8 +65,13 @@ export default [
     rules: {
       // Local rules - agentic code safety
       'local/no-child-process-execSync': 'error',
+      'local/no-fs-mkdirSync': 'error',
+      'local/no-fs-realpathSync': 'error',
+      'local/no-os-tmpdir': 'error',
+      'local/no-unix-shell-commands': 'error',
 
       // TypeScript
+      'no-unused-vars': 'off', // Use @typescript-eslint/no-unused-vars instead
       '@typescript-eslint/no-unused-vars': ['error', {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
@@ -85,6 +91,9 @@ export default [
       }],
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       '@typescript-eslint/prefer-readonly': 'error',
+      '@typescript-eslint/no-redundant-type-constituents': 'error',
+      '@typescript-eslint/prefer-function-type': 'error',
+      '@typescript-eslint/no-require-imports': 'error',
 
       // General
       'no-console': 'off',
@@ -92,6 +101,7 @@ export default [
       'prefer-const': 'error',
       'no-var': 'error',
       'max-depth': ['error', 4],
+      'max-params': ['error', 7], // Matches SonarQube threshold
 
       // Security
       'security/detect-object-injection': 'off',
@@ -121,6 +131,7 @@ export default [
       'unicorn/prefer-string-replace-all': 'error',
       'unicorn/prefer-array-find': 'error',
       'unicorn/prefer-array-some': 'error',
+      'unicorn/prefer-at': 'error',
       'unicorn/prefer-includes': 'error',
       'unicorn/no-for-loop': 'error',
       'unicorn/prefer-spread': 'error',
@@ -128,6 +139,11 @@ export default [
       'unicorn/no-instanceof-array': 'error',
       'unicorn/prefer-date-now': 'error',
       'unicorn/prefer-ternary': 'off',
+      'unicorn/prefer-number-properties': 'error',
+      'unicorn/no-negated-condition': 'error',
+      'unicorn/prefer-export-from': 'error',
+      'unicorn/prefer-structured-clone': 'error',
+      'unicorn/no-zero-fractions': 'error',
     },
   },
 ];

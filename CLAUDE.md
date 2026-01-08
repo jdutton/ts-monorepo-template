@@ -267,6 +267,18 @@ Use these approaches:
 - **Build Order**: Respect dependency graph, use TypeScript project references
 - **Testing**: Test packages in isolation + integration between packages
 
+## Example Utils Package - Cross-Platform Compatibility
+
+The `@ts-monorepo-template/example-utils` package provides cross-platform utilities for handling Windows 8.3 short path names (RUNNER~1) that cause test failures on Windows CI.
+
+**Key utilities:**
+- `normalizedTmpdir()`, `mkdirSyncReal()`, `normalizePath()` - Path utilities that resolve Windows short names
+- `getTestOutputDir()` - Creates isolated test output directories
+
+**ESLint enforcement:** Custom rules (`no-os-tmpdir`, `no-fs-mkdirSync`, `no-fs-realpathSync`, `no-unix-shell-commands`) automatically enforce usage of these utilities instead of unsafe alternatives.
+
+**📖 For complete API documentation and usage examples:** See [packages/example-utils/README.md](packages/example-utils/README.md)
+
 ## Development Tools Package
 
 All tools are TypeScript (not shell scripts) for cross-platform compatibility:
@@ -302,10 +314,30 @@ This is "good overkill" - prevents technical debt from accumulating through AI-a
 
 Located in `packages/dev-tools/eslint-local-rules/`:
 
+**Security & Cross-Platform:**
 - **`no-child-process-execSync`** - Enforces `safeExecSync()` instead of raw `execSync()`
   - Why: `execSync()` uses shell interpreter → command injection risk
   - Why: `safeExecSync()` uses `which` pattern + no shell → cross-platform + secure
   - **Auto-fix**: Replaces `execSync` with `safeExecSync` and adds import
+
+**Cross-Platform Path Handling (Windows 8.3 Short Names):**
+- **`no-os-tmpdir`** - Enforces `normalizedTmpdir()` from `@ts-monorepo-template/example-utils`
+  - Why: `os.tmpdir()` returns Windows 8.3 short paths (RUNNER~1) causing test failures
+  - Why: `normalizedTmpdir()` uses `realpathSync.native()` to resolve actual filesystem paths
+
+- **`no-fs-mkdirSync`** - Enforces `mkdirSyncReal()` from `@ts-monorepo-template/example-utils`
+  - Why: After `fs.mkdirSync()`, the path might not match what the filesystem uses on Windows
+  - Why: `mkdirSyncReal()` returns the real (normalized) path to handle 8.3 short name issues
+
+- **`no-fs-realpathSync`** - Enforces `normalizePath()` from `@ts-monorepo-template/example-utils`
+  - Why: `fs.realpathSync()` doesn't consistently resolve Windows 8.3 short paths across Node versions
+  - Why: `normalizePath()` uses `realpathSync.native()` with fallbacks for better cross-platform compatibility
+
+- **`no-unix-shell-commands`** - Prevents Unix-specific commands in exec/spawn calls
+  - Why: Commands like `tar`, `ls`, `touch`, `grep` are Unix-specific and fail on Windows
+  - Why: Use cross-platform alternatives: Node.js fs APIs or cross-platform npm packages
+  - Detects commands in: `safeExecSync()`, `safeExecResult()`, `spawn()`, `spawnSync()`, `execSync()`
+  - Provides alternatives: `ls` → `fs.readdirSync()`, `grep` → `Grep tool`, `cat` → `fs.readFileSync()`, etc.
 
 ### Creating New Rules
 

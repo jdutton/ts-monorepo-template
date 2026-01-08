@@ -14,6 +14,18 @@
  * - Integration tests
  * - Code coverage
  * - Export patterns
+ * - Cross-platform path utilities
+ * - Cross-platform test helpers
  */
 
 export { capitalize, isEmpty, truncate } from './string-utils.js';
+export {
+  getRelativePath,
+  isAbsolutePath,
+  mkdirSyncReal,
+  normalizePath,
+  normalizedTmpdir,
+  toAbsolutePath,
+  toForwardSlash,
+} from './path-utils.js';
+export { getTestOutputBase, getTestOutputDir } from './test-helpers.js';
