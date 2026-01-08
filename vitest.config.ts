@@ -39,6 +39,7 @@ export default defineConfig({
         '**/*.spec.ts',
         '**/index.ts', // Re-exports
         '**/types.ts', // Type definitions
+        '**/test-helpers.ts', // Test utilities
         'packages/dev-tools/**', // Exclude dev-tools (infrastructure)
       ],
       thresholds: {

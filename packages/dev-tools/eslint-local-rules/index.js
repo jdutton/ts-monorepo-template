@@ -3,11 +3,21 @@
  *
  * Security and Cross-Platform Compatibility Rules:
  * - no-child-process-execSync: Enforce safeExecSync() instead of execSync() (security + cross-platform)
+ * - no-os-tmpdir: Enforce normalizedTmpdir() instead of os.tmpdir() (Windows 8.3 short paths)
+ * - no-fs-mkdirSync: Enforce mkdirSyncReal() instead of fs.mkdirSync() (Windows path normalization)
+ * - no-fs-realpathSync: Enforce normalizePath() instead of fs.realpathSync() (consistent Windows resolution)
+ * - no-unix-shell-commands: Prevent Unix-specific commands that break Windows compatibility
  *
  * ## Why Custom Rules?
  *
  * When working with agentic code (Claude, Cursor, etc.), AI can easily reintroduce unsafe patterns.
  * Custom ESLint rules provide automatic guardrails that catch these issues during development.
+ *
+ * ## Cross-Platform Path Utilities
+ *
+ * The path-related rules enforce usage of utilities from @ts-monorepo-template/example-utils that
+ * handle Windows 8.3 short path names (RUNNER~1). These short paths cause test failures on Windows CI
+ * because Node.js operations create long names but comparisons use short names.
  *
  * ## Adding New Rules
  *
@@ -24,7 +34,7 @@
  *   unsafeFn: 'unlinkSync',
  *   unsafeModule: 'node:fs',
  *   safeFn: 'safeUnlinkSync',
- *   safeModule: './common.js',
+ *   safeModule: '@ts-monorepo-template/example-utils',
  *   message: 'Use safeUnlinkSync() for better error handling',
  * });
  * ```
@@ -36,5 +46,9 @@ const require = createRequire(import.meta.url);
 export default {
   rules: {
     'no-child-process-execSync': require('./no-child-process-execSync.cjs'),
+    'no-fs-mkdirSync': require('./no-fs-mkdirSync.cjs'),
+    'no-fs-realpathSync': require('./no-fs-realpathSync.cjs'),
+    'no-os-tmpdir': require('./no-os-tmpdir.cjs'),
+    'no-unix-shell-commands': require('./no-unix-shell-commands.cjs'),
   },
 };
