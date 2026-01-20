@@ -100,6 +100,7 @@ export default [
       'no-undef': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
+      'no-lonely-if': 'error', // Catches else { if } → else if
       'max-depth': ['error', 4],
       'max-params': ['error', 7], // Matches SonarQube threshold
 
@@ -144,6 +145,9 @@ export default [
       'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-structured-clone': 'error',
       'unicorn/no-zero-fractions': 'error',
+      'unicorn/prefer-top-level-await': 'error', // Catches .then() chains in top-level code
+      'unicorn/no-useless-spread': 'error', // Catches {...{foo: 'bar'}}
+      'unicorn/no-array-push-push': 'error', // Catches arr.push(a); arr.push(b)
     },
   },
 ];
