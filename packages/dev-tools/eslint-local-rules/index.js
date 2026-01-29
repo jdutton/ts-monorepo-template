@@ -7,6 +7,9 @@
  * - no-fs-mkdirSync: Enforce mkdirSyncReal() instead of fs.mkdirSync() (Windows path normalization)
  * - no-fs-realpathSync: Enforce normalizePath() instead of fs.realpathSync() (consistent Windows resolution)
  * - no-unix-shell-commands: Prevent Unix-specific commands that break Windows compatibility
+ * - no-manual-path-normalize: Enforce toForwardSlash() instead of manual .split(path.sep).join('/') patterns
+ * - no-path-sep-in-strings: Prevent path.sep in string operations (split, includes, etc.)
+ * - no-path-operations-in-comparisons: Require normalizing path operations before string comparisons
  *
  * ## Why Custom Rules?
  *
@@ -50,5 +53,8 @@ export default {
     'no-fs-realpathSync': require('./no-fs-realpathSync.cjs'),
     'no-os-tmpdir': require('./no-os-tmpdir.cjs'),
     'no-unix-shell-commands': require('./no-unix-shell-commands.cjs'),
+    'no-manual-path-normalize': require('./no-manual-path-normalize.cjs'),
+    'no-path-sep-in-strings': require('./no-path-sep-in-strings.cjs'),
+    'no-path-operations-in-comparisons': require('./no-path-operations-in-comparisons.cjs'),
   },
 };
