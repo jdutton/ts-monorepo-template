@@ -151,6 +151,9 @@ export default [
       'unicorn/prefer-top-level-await': 'error', // Catches .then() chains in top-level code
       'unicorn/no-useless-spread': 'error', // Catches {...{foo: 'bar'}}
       'unicorn/no-array-push-push': 'error', // Catches arr.push(a); arr.push(b)
+      'unicorn/no-useless-undefined': 'error', // Simplify unnecessary undefined returns
+      'unicorn/prefer-code-point': 'error', // Prefer codePointAt() over charCodeAt() for Unicode
+      'unicorn/prefer-set-has': 'error', // Optimize Set lookups over Array.includes()
     },
   },
 ];
