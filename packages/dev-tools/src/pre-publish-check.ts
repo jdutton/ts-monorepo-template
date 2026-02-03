@@ -65,7 +65,7 @@ Exit codes:
     `);
     process.exit(0);
   } else {
-    console.error(`Unknown option: ${args[i]}`);
+    console.error(`Unknown option: ${args[i] ?? ''}`);
     console.error('Usage: tsx tools/pre-publish-check.ts [--allow-branch BRANCH]');
     process.exit(1);
   }

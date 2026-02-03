@@ -98,6 +98,17 @@ export default [
       '@typescript-eslint/prefer-function-type': 'error',
       '@typescript-eslint/no-require-imports': 'error',
 
+      // Stricter type safety - catch SonarQube-style issues early
+      '@typescript-eslint/no-base-to-string': 'error', // Prevent [object Object] in strings
+      '@typescript-eslint/restrict-template-expressions': ['error', {
+        allowNumber: true,
+        allowBoolean: true,
+        allowAny: false,
+        allowNullish: false,
+      }],
+      // Note: no-unsafe-member-access and no-unsafe-assignment are too noisy
+      // They're valuable for new code but too much to fix in existing codebase
+
       // General
       'no-console': 'off',
       'no-undef': 'off',

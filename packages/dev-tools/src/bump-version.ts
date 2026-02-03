@@ -117,7 +117,7 @@ if (['patch', 'minor', 'major'].includes(versionArg)) {
     }
 
     newVersion = incrementVersion(currentVersion, versionArg);
-    log(`Current version: ${currentVersion}`, 'blue');
+    log(`Current version: ${String(currentVersion)}`, 'blue');
     log(`Increment type: ${versionArg}`, 'blue');
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -186,11 +186,11 @@ log('Updating root package.json...', 'blue');
 try {
   const result = updatePackageVersion(rootPackagePath, newVersion);
   if (result.skipped) {
-    log(`  - ${result.name || 'root'}: skipped (${result.reason})`, 'yellow');
+    log(`  - ${result.name || 'root'}: skipped (${result.reason ?? ''})`, 'yellow');
   } else if (result.updated) {
-    log(`  ✓ ${result.name || 'root'}: ${result.oldVersion} → ${result.newVersion}`, 'green');
+    log(`  ✓ ${result.name || 'root'}: ${result.oldVersion ?? ''} → ${result.newVersion ?? ''}`, 'green');
   } else {
-    log(`  - ${result.name || 'root'}: already at ${result.newVersion}`, 'yellow');
+    log(`  - ${result.name || 'root'}: already at ${result.newVersion ?? ''}`, 'yellow');
   }
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
@@ -218,9 +218,9 @@ if (hasPackages) {
     (pkgPath) => updatePackageVersion(pkgPath, newVersion),
     (result) => {
       if (result.updated) {
-        log(`  ✓ ${result.name}: ${result.oldVersion} → ${result.newVersion}`, 'green');
+        log(`  ✓ ${result.name ?? ''}: ${result.oldVersion ?? ''} → ${result.newVersion ?? ''}`, 'green');
       } else {
-        log(`  - ${result.name}: already at ${result.newVersion}`, 'yellow');
+        log(`  - ${result.name ?? ''}: already at ${result.newVersion ?? ''}`, 'yellow');
       }
     },
     () => {

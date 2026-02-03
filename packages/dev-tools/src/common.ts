@@ -118,7 +118,7 @@ export function safeExecSync(
 
   if (result.status !== 0) {
     throw new Error(
-      `Command failed with exit code ${result.status}: ${command} ${args.join(' ')}\n${result.stderr?.toString() ?? ''}`
+      `Command failed with exit code ${result.status ?? 1}: ${command} ${args.join(' ')}\n${result.stderr?.toString() ?? ''}`
     );
   }
 
