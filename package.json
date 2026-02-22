@@ -34,6 +34,7 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --build --dry --force",
     "duplication-check": "tsx packages/dev-tools/src/duplication-check.ts",
+    "validate-structure": "tsx packages/dev-tools/src/validate-repo-structure.ts",
     "duplication-update-baseline": "tsx packages/dev-tools/src/jscpd-update-baseline.ts",
     "validate": "vibe-validate validate",
     "pre-commit": "vibe-validate pre-commit",
