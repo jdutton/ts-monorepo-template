@@ -28,6 +28,7 @@ import { join } from 'node:path';
 import { log } from './common.js';
 
 const PACKAGES_DIR = join(import.meta.dirname, '../../../packages');
+// CUSTOMIZE: Replace '@vibe-agent-toolkit' with your npm package scope (e.g., '@myorg')
 const SCOPE = '@vibe-agent-toolkit';
 
 interface PackageJson {

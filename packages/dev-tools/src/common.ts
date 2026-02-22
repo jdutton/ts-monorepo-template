@@ -291,6 +291,7 @@ export function findPublishablePackages(
       }
 
       // Skip umbrella package if requested (for npm link, to avoid bin conflicts)
+      // CUSTOMIZE: Replace 'vibe-agent-toolkit' with your umbrella package name, or remove this check
       if (options.skipUmbrellaPackage && packageJson['name'] === 'vibe-agent-toolkit') {
         continue;
       }

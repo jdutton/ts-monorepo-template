@@ -16,8 +16,10 @@ import { validatePackageList as validatePackages } from './validate-package-list
 
 const PROJECT_ROOT = process.cwd();
 const MANIFEST_PATH = join(PROJECT_ROOT, '.publish-manifest.json');
+// CUSTOMIZE: Replace with your npm package scope (e.g., '@myorg/')
 const VIBE_AGENT_TOOLKIT_SCOPE = '@vibe-agent-toolkit/';
 const PACKAGES_DIR = 'packages';
+// CUSTOMIZE: Replace with your umbrella/root package name, or remove if none
 const UMBRELLA_PACKAGE_NAME = 'vibe-agent-toolkit';
 
 // Use published packages list as PACKAGES for compatibility with existing code
@@ -156,6 +158,7 @@ function deprecatePackage(packageName: string, version: string, dryRun: boolean)
   const fullPackageName = packageName === UMBRELLA_PACKAGE_NAME
     ? UMBRELLA_PACKAGE_NAME
     : `${VIBE_AGENT_TOOLKIT_SCOPE}${packageName}`;
+  // CUSTOMIZE: Update this URL to your project's issue tracker
   const message = '⚠️ Incomplete publish - DO NOT USE. See https://github.com/jdutton/vibe-agent-toolkit/issues';
 
   log(`  Deprecating ${fullPackageName}@${version}...`, 'yellow');

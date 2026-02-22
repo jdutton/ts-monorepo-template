@@ -29,11 +29,13 @@ const __dirname = resolve(__filename, '..');
 
 // Find repo root (3 levels up from packages/dev-tools/src/)
 const REPO_ROOT = resolve(__dirname, '../../..');
+// CUSTOMIZE: Replace '@vibe-agent-toolkit' with your npm package scope
 const WORKSPACE_SCOPE = '@vibe-agent-toolkit';
 const PACKAGES_DIR = join(REPO_ROOT, 'packages');
 const NODE_MODULES_DIR = join(REPO_ROOT, 'node_modules');
 
-// All workspace packages that need Node.js-compatible symlinks
+// CUSTOMIZE: Replace this array with your project's workspace package names.
+// List all packages from your packages/ directory that you want to link globally.
 const WORKSPACE_PACKAGES = [
   'agent-config',
   'agent-runtime',

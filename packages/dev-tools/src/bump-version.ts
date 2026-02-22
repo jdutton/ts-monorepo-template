@@ -1,10 +1,10 @@
 /**
  * Version Bump Script
  *
- * Updates version in ALL package.json files (root + all workspace packages) AND
- * resolves workspace:* dependencies to actual version numbers for npm publishing.
+ * Updates version in ALL package.json files (root + all workspace packages).
  *
- * This ensures consistent versioning across the monorepo and prepares packages for publishing.
+ * This ensures consistent versioning across the monorepo.
+ * Note: workspace:* dependencies are NOT resolved by this script — use resolve-workspace-deps for that.
  *
  * Usage:
  *   tsx tools/bump-version.ts <version|increment>
@@ -18,7 +18,7 @@
  *
  * What it does:
  *   1. Updates "version" field in all package.json files
- *   2. Resolves "workspace:*" → actual version for @vibe-agent-toolkit/* packages
+ *   Note: workspace:* dependencies are NOT resolved — run resolve-workspace-deps separately before publishing
  *
  * Exit codes:
  *   0 - Success

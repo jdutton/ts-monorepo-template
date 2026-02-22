@@ -16,6 +16,7 @@ import { log } from './common.js';
 
 const PROJECT_ROOT = process.cwd();
 const PACKAGES_DIR = join(PROJECT_ROOT, 'packages');
+// CUSTOMIZE: Replace '@vibe-agent-toolkit' with your npm package scope (e.g., '@myorg')
 const SCOPE = '@vibe-agent-toolkit';
 const WORKSPACE_PROTOCOL = 'workspace:*';
 

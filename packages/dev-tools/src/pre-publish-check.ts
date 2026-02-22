@@ -32,6 +32,8 @@ import { join } from 'node:path';
 import { PROJECT_ROOT, log, safeExecSync, safeExecResult } from './common.js';
 import { validatePackageList } from './validate-package-list.js';
 
+const PACKAGE_JSON = 'package.json';
+
 /**
  * Detect if running in CI environment
  */
@@ -56,7 +58,7 @@ function getPublishablePackages(packagesDir: string): Array<{ name: string; pkgJ
     .map(dirent => dirent.name);
 
   for (const pkg of packages) {
-    const pkgJsonPath = join(packagesDir, pkg, 'package.json');
+    const pkgJsonPath = join(packagesDir, pkg, PACKAGE_JSON);
     if (existsSync(pkgJsonPath)) {
       const pkgJson = JSON.parse(readFileSync(pkgJsonPath, 'utf8')) as Record<string, unknown>;
 
@@ -535,16 +537,16 @@ if (skipGitChecks) {
   console.log('Checking CHANGELOG.md...');
 
   try {
-    // Read version from umbrella package (monorepo canonical version)
-    const umbrellaPkgJsonPath = join(packagesDir, 'vibe-agent-toolkit', 'package.json');
-    if (!existsSync(umbrellaPkgJsonPath)) {
-      throw new Error('Umbrella package (vibe-agent-toolkit) package.json not found');
-    }
+    // Read version from umbrella package if present, otherwise fall back to root package.json
+    const umbrellaPkgJsonPath = join(packagesDir, 'vibe-agent-toolkit', PACKAGE_JSON);
+    const versionSourcePath = existsSync(umbrellaPkgJsonPath)
+      ? umbrellaPkgJsonPath
+      : join(PROJECT_ROOT, PACKAGE_JSON);
 
-    const umbrellaPkgJson = JSON.parse(readFileSync(umbrellaPkgJsonPath, 'utf8')) as Record<string, unknown>;
+    const umbrellaPkgJson = JSON.parse(readFileSync(versionSourcePath, 'utf8')) as Record<string, unknown>;
     const version = umbrellaPkgJson['version'];
     if (typeof version !== 'string') {
-      throw new TypeError('Version not found in umbrella package (vibe-agent-toolkit) package.json');
+      throw new TypeError(`Version not found in ${versionSourcePath}`);
     }
 
     // Read CHANGELOG.md

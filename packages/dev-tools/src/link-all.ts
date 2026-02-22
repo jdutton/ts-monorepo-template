@@ -5,8 +5,7 @@
  * Usage: bun run link-all
  *
  * This creates global npm links for all non-private packages in the monorepo,
- * making them available for `npm link @vibe-agent-toolkit/package-name` in
- * other projects.
+ * making them available for `npm link @your-scope/package-name` in other projects.
  *
  * IMPORTANT: npm workspace bug with `npm link`
  * ============================================
@@ -18,7 +17,7 @@
  *
  * 1. npm link is a "global operation" (sets npm_config_global=true)
  * 2. Packages with postinstall scripts run during npm link
- * 3. If a globally installed version of vat exists, postinstall scripts use the
+ * 3. If a globally installed version exists, postinstall scripts use the
  *    OLD global version instead of the NEW workspace version
  * 4. This can cause npm's internal arborist to lose track of package references
  * 5. Result: npm error even though the code/packages are valid
@@ -31,12 +30,6 @@
  * The fix for postinstall scripts (checking npm_command === 'install' vs 'link')
  * helps prevent state corruption, but doesn't fully solve the workspace conflict.
  *
- * Affected packages typically include:
- * - vibe-agent-toolkit (umbrella package with bin conflict - skipped by default)
- * - @vibe-agent-toolkit/cli (provides vat command)
- * - @vibe-agent-toolkit/agent-config (has complex workspace deps)
- * - @vibe-agent-toolkit/vat-example-cat-agents (has postinstall script)
- *
  * Known npm workspace bug (as of npm v11.5.1):
  * Some packages may fail to link with "Cannot read properties of null" even
  * with no global installations. This appears to be an npm arborist bug when:
@@ -44,15 +37,12 @@
  * - npm tries to resolve the dependency tree during link
  * - Arborist loses track of package references
  *
- * This is OK! Most packages (16-17/19) link successfully, which is sufficient
- * for development. The CLI package usually works after retrying once.
- *
  * Debugging tips:
- * - Check `npm list -g --depth=0` for VAT packages
+ * - Check `npm list -g --depth=0` for your packages
  * - Look for "Cannot read properties of null" in npm logs
  * - Try `npm uninstall -g <package>` before linking (fixes ~90% of cases)
  * - Check /Users/$USER/.npm/_logs for detailed npm errors
- * - If 2-3 packages persistently fail, that's expected npm workspace behavior
+ * - If a few packages persistently fail, that's expected npm workspace behavior
  */
 
 import { processPackages, safeExecSync } from './common.js';
@@ -75,12 +65,12 @@ function checkForGlobalInstallations(): string[] {
     const problematicPackages: string[] = [];
 
     if (globalPackages.dependencies) {
-      // Check for umbrella package
+      // CUSTOMIZE: Replace 'vibe-agent-toolkit' with your umbrella package name (if any)
       if ('vibe-agent-toolkit' in globalPackages.dependencies) {
         problematicPackages.push('vibe-agent-toolkit');
       }
 
-      // Check for CLI package (provides vat command)
+      // CUSTOMIZE: Replace '@vibe-agent-toolkit/cli' with your CLI package name (if any)
       if ('@vibe-agent-toolkit/cli' in globalPackages.dependencies) {
         // Only flag if it's a real install (not a symlink from previous npm link)
         const pkg = globalPackages.dependencies['@vibe-agent-toolkit/cli'];
@@ -155,10 +145,11 @@ warnAboutGlobalInstallations(problematicPackages);
 const exitCode = processPackages({
   action: 'link',
   actionVerb: 'Linked',
-  introMessage: '🔗 VAT Development: Linking all publishable packages globally\n',
+  // CUSTOMIZE: Update these messages to match your project name and scope
+  introMessage: '🔗 Linking all publishable packages globally\n',
   successMessage:
     '\n💡 Next step: In your target project, run:\n' +
-    '   npm link @vibe-agent-toolkit/package-name\n' +
+    '   npm link @your-scope/package-name\n' +
     '\n💡 To unlink later: bun run unlink-all',
   packageHandler: linkPackage,
 });
