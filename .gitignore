@@ -64,6 +64,7 @@ tmp/
 
 # Ignore ALL root-level markdown files (catches Claude Code and other AI-generated temporary files)
 /*.md
+docs/plans/
 
 # Explicitly include critical documentation (negation patterns MUST come after the ignore)
 !README.md
