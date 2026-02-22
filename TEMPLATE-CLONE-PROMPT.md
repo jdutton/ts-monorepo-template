@@ -145,6 +145,23 @@ Manually update these files with your project-specific information:
 #### `LICENSE`
 - Update year and copyright holder if needed
 
+#### `packages/dev-tools/src/repo-structure-config.ts`
+- Update `allowedScriptsPackages` if you have packages beyond `dev-tools` that need `/scripts`
+- Add `noExamplesPatterns` if certain package naming patterns should not have `/examples` dirs
+- Add `allowedPackageTsPaths` for any non-standard TypeScript file locations
+
+#### `packages/dev-tools/src/package-lists.ts`
+- Populate `PUBLISHED_PACKAGES` with your publishable package names in dependency order
+- Update `SKIP_PACKAGES` as needed (keep `dev-tools` unless you rename it)
+
+#### Files with `CUSTOMIZE` comments (search for `// CUSTOMIZE:`)
+Several backported tools contain vibe-specific values that must be updated for your project:
+- `fix-workspace-deps.ts` and `resolve-workspace-deps.ts` — update `SCOPE` to your npm scope
+- `link-workspace-packages.ts` — update `WORKSPACE_SCOPE` and `WORKSPACE_PACKAGES` array
+- `publish-with-rollback.ts` — update scope, umbrella package name, and issue tracker URL
+- `common.ts` — update umbrella package name check
+- `link-all.ts` — update global installation checks
+
 ### 5. Install Dependencies
 
 ```bash
@@ -166,6 +183,7 @@ bun run typecheck
 bun run lint
 bun run test
 bun run build
+bun run validate-structure  # Check repo structural conventions
 ```
 
 All checks should pass before proceeding.
