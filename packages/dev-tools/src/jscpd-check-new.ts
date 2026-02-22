@@ -96,12 +96,12 @@ function checkNewDuplications() {
     console.log('📝 No baseline found. Creating baseline from current state...');
     writeFileSync(BASELINE_FILE, JSON.stringify({ duplicates: currentClones }, null, 2));
     console.log(`✅ Baseline saved to ${BASELINE_FILE}`);
-    console.log(`   Current duplication: ${String((currentReport.statistics?.total?.percentage ?? 0).toFixed(2))}%`);
+    console.log(`   Current duplication: ${String(currentReport.statistics.total.percentage.toFixed(2))}%`);
     console.log(`   (${String(currentClones.length)} clones)\n`);
     process.exit(0);
   }
 
-  const baseline = JSON.parse(readFileSync(BASELINE_FILE, 'utf-8'));
+  const baseline = JSON.parse(readFileSync(BASELINE_FILE, 'utf-8')) as { duplicates?: Clone[] };
   const baselineClones = baseline.duplicates ?? [];
 
   // Build baseline signature set for comparison
@@ -115,7 +115,7 @@ function checkNewDuplications() {
   // Report results
   if (newClones.length === 0) {
     console.log('✅ No new code duplication detected!');
-    console.log(`   Current: ${String(currentClones.length)} clones (${String((currentReport.statistics?.total?.percentage ?? 0).toFixed(2))}%)`);
+    console.log(`   Current: ${String(currentClones.length)} clones (${String(currentReport.statistics.total.percentage.toFixed(2))}%)`);
     console.log(`   Baseline: ${String(baselineClones.length)} clones\n`);
     process.exit(0);
   }
@@ -132,7 +132,7 @@ function checkNewDuplications() {
 
     console.log(`  📁 ${fileA}:${linesA}`);
     console.log(`     ↔ ${fileB}:${linesB}`);
-    console.log(`     (${lines} lines duplicated)\n`);
+    console.log(`     (${String(lines)} lines duplicated)\n`);
   }
 
   console.log('💡 To fix:');

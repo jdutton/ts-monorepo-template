@@ -1,8 +1,10 @@
 /**
  * Version Bump Script
  *
- * Updates version in ALL package.json files (root + all workspace packages).
- * This ensures consistent versioning across the monorepo.
+ * Updates version in ALL package.json files (root + all workspace packages) AND
+ * resolves workspace:* dependencies to actual version numbers for npm publishing.
+ *
+ * This ensures consistent versioning across the monorepo and prepares packages for publishing.
  *
  * Usage:
  *   tsx tools/bump-version.ts <version|increment>
@@ -13,6 +15,10 @@
  *   tsx tools/bump-version.ts patch        # Increment patch (1.0.0 -> 1.0.1)
  *   tsx tools/bump-version.ts minor        # Increment minor (1.0.0 -> 1.1.0)
  *   tsx tools/bump-version.ts major        # Increment major (1.0.0 -> 2.0.0)
+ *
+ * What it does:
+ *   1. Updates "version" field in all package.json files
+ *   2. Resolves "workspace:*" → actual version for @vibe-agent-toolkit/* packages
  *
  * Exit codes:
  *   0 - Success
@@ -27,7 +33,7 @@ import { join } from 'node:path';
 
 import semver from 'semver';
 
-import { PROJECT_ROOT, log, processWorkspacePackages, type PackageProcessResult } from './common.js';
+import { PROJECT_ROOT, log, processWorkspacePackages, safeExecSync, type PackageProcessResult } from './common.js';
 
 const PACKAGE_JSON = 'package.json';
 
@@ -118,7 +124,7 @@ if (['patch', 'minor', 'major'].includes(versionArg)) {
 
     newVersion = incrementVersion(currentVersion, versionArg);
     log(`Current version: ${String(currentVersion)}`, 'blue');
-    log(`Increment type: ${versionArg}`, 'blue');
+    log(`Increment type: ${String(versionArg)}`, 'blue');
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     log(`✗ Failed to read current version: ${message}`, 'red');
@@ -170,6 +176,10 @@ function updatePackageVersion(filePath: string, newVersion: string): VersionUpda
       `"version": "${newVersion}"`
     );
 
+    // NOTE: workspace:* dependencies are NOT replaced here
+    // They remain as workspace:* in git for CI compatibility
+    // Bun automatically replaces workspace:* with actual versions during npm publish
+
     writeFileSync(filePath, updatedContent, 'utf8');
 
     return { skipped: false, updated: true, oldVersion, newVersion, name: pkg.name };
@@ -186,11 +196,11 @@ log('Updating root package.json...', 'blue');
 try {
   const result = updatePackageVersion(rootPackagePath, newVersion);
   if (result.skipped) {
-    log(`  - ${result.name || 'root'}: skipped (${result.reason ?? ''})`, 'yellow');
+    log(`  - ${result.name ?? 'root'}: skipped (${String(result.reason ?? 'unknown')})`, 'yellow');
   } else if (result.updated) {
-    log(`  ✓ ${result.name || 'root'}: ${result.oldVersion ?? ''} → ${result.newVersion ?? ''}`, 'green');
+    log(`  ✓ ${result.name ?? 'root'}: ${String(result.oldVersion ?? 'unknown')} → ${String(result.newVersion ?? 'unknown')}`, 'green');
   } else {
-    log(`  - ${result.name || 'root'}: already at ${result.newVersion ?? ''}`, 'yellow');
+    log(`  - ${result.name ?? 'root'}: already at ${String(result.newVersion ?? 'unknown')}`, 'yellow');
   }
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
@@ -218,9 +228,9 @@ if (hasPackages) {
     (pkgPath) => updatePackageVersion(pkgPath, newVersion),
     (result) => {
       if (result.updated) {
-        log(`  ✓ ${result.name ?? ''}: ${result.oldVersion ?? ''} → ${result.newVersion ?? ''}`, 'green');
+        log(`  ✓ ${String(result.name ?? 'unknown')}: ${String(result.oldVersion ?? 'unknown')} → ${String(result.newVersion ?? 'unknown')}`, 'green');
       } else {
-        log(`  - ${result.name ?? ''}: already at ${result.newVersion ?? ''}`, 'yellow');
+        log(`  - ${String(result.name ?? 'unknown')}: already at ${String(result.newVersion ?? 'unknown')}`, 'yellow');
       }
     },
     () => {
@@ -240,6 +250,22 @@ if (hasPackages) {
 
 console.log('');
 log(`✅ Version bump complete!`, 'green');
+console.log('');
+
+// Update bun.lock to reflect version changes
+log('Updating bun.lock...', 'blue');
+try {
+  safeExecSync('bun', ['install', '--lockfile-only'], {
+    cwd: PROJECT_ROOT,
+    stdio: ['ignore', 'inherit', 'inherit'], // stdin: ignore to prevent hanging in pipes/bg
+  });
+  log('  ✓ bun.lock updated', 'green');
+} catch (error) {
+  const message = error instanceof Error ? error.message : String(error);
+  log(`  ✗ Failed to update bun.lock: ${message}`, 'red');
+  log('  You may need to run "bun install" manually', 'yellow');
+}
+
 console.log('');
 console.log('Next steps:');
 console.log(`  1. Review changes: git diff`);
