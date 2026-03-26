@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **`@next` dist-tag now updated on stable npm releases** — `publish-with-rollback.ts` adds a Phase 2 that applies `npm dist-tag add <pkg>@<version> next` to all packages when `UPDATE_NEXT=true`; set this env var from your publish workflow (e.g. via `determine-publish-tags.ts`) so that after a stable release `@next` points to it rather than staying pinned to the last RC
+
 ### Added
 - Initial monorepo template setup
 - TypeScript configuration with strict mode
